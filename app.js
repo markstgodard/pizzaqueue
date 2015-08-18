@@ -3,6 +3,7 @@
 //------------------------------------------------------------------------------
 // node.js starter application for Bluemix
 //------------------------------------------------------------------------------
+require('newrelic');
 
 // This application uses express as its web server
 // for more info, see: http://expressjs.com
