@@ -1,2 +1,2 @@
 # Pizzaqueue
-Serves the Request Queue time (and :pizza:)
+Serves the X-Request-Start, current time and :pizza:
