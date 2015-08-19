@@ -8,7 +8,8 @@
   "dependencies": {
     "express": "4.12.x",
     "cfenv": "1.0.x",
-    "newrelic": "^1.21.2"
+    "newrelic": "^1.21.2",
+    "node-emoji": "^1.0.3"
   },
   "repository": {},
   "engines": {

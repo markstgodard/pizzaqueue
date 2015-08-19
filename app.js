@@ -1,30 +1,51 @@
 /*eslint-env node*/
 
-//------------------------------------------------------------------------------
-// node.js starter application for Bluemix
-//------------------------------------------------------------------------------
 require('newrelic');
 
-// This application uses express as its web server
-// for more info, see: http://expressjs.com
 var express = require('express');
 
-// cfenv provides access to your Cloud Foundry environment
-// for more info, see: https://www.npmjs.com/package/cfenv
 var cfenv = require('cfenv');
 
-// create a new express server
 var app = express();
 
-// serve the files out of ./public as our main files
-app.use(express.static(__dirname + '/public'));
+var emoji = require('node-emoji');
 
-// get the app environment from Cloud Foundry
+
+var REQUEST_HEADER = "x-request-start"
+var QUEUE_HEADER = "x-queue-start"
+
+// serve pizza and timings
+app.get('/', function (req, res) {
+
+    var queueTime
+    var qtime = req.headers[REQUEST_HEADER] || req.headers[QUEUE_HEADER]
+    if (qtime) {
+      var split = qtime.split('=')
+      if (split.length > 1) {
+        qtime = split[1]
+      }
+
+      var start = parseFloat(qtime)
+
+      if (isNaN(start)) {
+        logger.warn('Queue time header parsed as NaN (' + qtime + ')')
+      } else {
+        // nano seconds
+        if (start > 1e18) start = start / 1e6
+        // micro seconds
+        else if (start > 1e15) start = start / 1e3
+        // seconds
+        else if (start < 1e12) start = start * 1e3
+
+        queueTime = Date.now() - start
+      }
+    }
+
+    res.send(emoji.get('pizza') + ' queue time: ' + queueTime);
+});
+
 var appEnv = cfenv.getAppEnv();
 
-// start server on the specified port and binding host
 app.listen(appEnv.port, function() {
-
-	// print a message when the server starts listening
   console.log("server starting on " + appEnv.url);
 });
