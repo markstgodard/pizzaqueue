@@ -14,7 +14,7 @@ app.get('/', function (req, res) {
     var startTime = req.headers[REQUEST_HEADER]
     var now = Date.now()
 
-    res.send(pizza + ' X-Request-Start: ' + startTime + ' - now: ' + now + ' = ' + (startTime - now) +'\n')
+    res.send(pizza + ' X-Request-Start: ' + startTime + ' - now: ' + now + ' = ' + (now - startTime) +'\n')
 });
 
 var appEnv = cfenv.getAppEnv();
