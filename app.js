@@ -1,26 +1,38 @@
+'use strict'
 /*eslint-env node*/
+var express = require('express'),
+    cfenv   = require('cfenv'),
+    util    = require('util'),
+    _       = require('lodash'),
+    pizza   = require('node-emoji').get('pizza');
 
-// require('newrelic');
-
-var express = require('express');
-var cfenv = require('cfenv');
-var util = require('util');
-var app = express();
-var pizza = require('node-emoji').get('pizza')
-
-var REQUEST_HEADER = 'x-request-start'
+var REQUEST_HEADER = 'x-request-start',
+    app            = express(),
+    appEnv         = cfenv.getAppEnv();
 
 // serve pizza
-app.get('/', function (req, res) {
-    var startTime = req.headers[REQUEST_HEADER]
-    var now = Date.now()
-
-    var mem = util.inspect(process.memoryUsage())
-    res.send(pizza + ' X-Request-Start: ' + startTime + ' - now: ' + now + ' = ' + (now - startTime) + ' mem usage: ' + mem + '\n')
+app.get('/', function (req, res, next) {
+    var startTime    = parseInt(req.get(REQUEST_HEADER)),
+        now          = Date.now(),
+        mem          = process.memoryUsage();
+    if (!startTime) {
+        next(new Error('No X-Request-Start header found.'));
+        return;
+    }
+    var stats = {
+        startTime: startTime,
+        now: now,
+        diff: now-startTime,
+        mem: mem
+    };
+    res.status(200).json(stats);
+});
+app.use(function(err, req, res, next) {
+    res.status(500).json({
+        cause: err.message
+    })
 });
 
-var appEnv = cfenv.getAppEnv();
-
-app.listen(appEnv.port, function() {
+app.listen(appEnv.port, function () {
   console.log("server starting on " + appEnv.url);
 });
