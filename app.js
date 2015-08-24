@@ -11,7 +11,7 @@ var REQUEST_HEADER = 'x-request-start',
     appEnv         = cfenv.getAppEnv();
 
 // serve pizza
-app.get('/', function (req, res, next) {
+app.get('/', function (req, res) {
     var startTime    = parseInt(req.get(REQUEST_HEADER)),
         now          = Date.now(),
         mem          = process.memoryUsage();
@@ -29,7 +29,7 @@ app.get('/', function (req, res, next) {
 });
 app.use(function(err, req, res, next) {
     res.status(500).json({
-        cause: err.message
+        error: err.message
     })
 });
 
