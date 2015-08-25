@@ -1,9 +1,9 @@
 {
-  "name": "NodejsStarterApp",
+  "name": "Pinger-App",
   "version": "0.0.1",
-  "description": "A sample nodejs app for Bluemix",
-  "scripts": {
-    "start": "start.sh"
+  "description": "Pings the pizzaqueue app",
+  "scripts":{
+      "start": "node app.js"
   },
   "dependencies": {
     "cfenv": "1.0.x",
@@ -15,6 +15,6 @@
   },
   "repository": {},
   "engines": {
-    "node": "0.12.x"
+      "node": "0.12.x"
   }
 }
