@@ -1,5 +1,6 @@
 'use strict'
 /*eslint-env node*/
+require('newrelic');
 var express = require('express'),
     cfenv   = require('cfenv'),
     util    = require('util'),
