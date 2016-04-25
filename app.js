@@ -14,9 +14,7 @@ var REQUEST_HEADER = 'x-request-start'
 app.get('/', function (req, res) {
     var startTime = req.headers[REQUEST_HEADER]
     var now = Date.now()
-
-    var mem = util.inspect(process.memoryUsage())
-    res.send(pizza + ' X-Request-Start: ' + startTime + ' - now: ' + now + ' = ' + (now - startTime) + ' mem usage: ' + mem + '\n')
+    res.send(pizza + ' X-Request-Start (gorouter): ' + startTime + ' - \n  Time app received request: ' + now + ' = ' + '\n  Request queue time: ' + (now - startTime) + ' (ms) \n')
 });
 
 var appEnv = cfenv.getAppEnv();
